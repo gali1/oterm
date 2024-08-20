@@ -34,6 +34,7 @@ cp .usr/local/bin/oterm /usr/local/bin/
 
 # Copy oterm package to the determined Python version site-packages directory
 cp -r ../oterm /usr/local/lib/$python_version/site-packages/
+cp -r .oterm-0.4.0.dist-info /usr/local/lib/$python_version/site-packages/oterm-0.4.0.dist-info
 
 # Use 'uv' to install packages from requirements.txt globally
 uv pip install --system -r requirements.txt
