@@ -1,46 +1,87 @@
-import pytest
-from ollama import ResponseError
+import asyncio
+import json
+from enum import Enum
+from pathlib import Path
+from typing import Literal, Optional
+from oterm.ollamaclient import OllamaLLM, Options
 
-from oterm.ollamaclient import OllamaLLM
+class Author(Enum):
+    USER = "me"
+    OLLAMA = "ollama"
 
+class ChatContainer:
+    def __init__(
+        self,
+        db_id: int,
+        chat_name: str,
+        model: str = "llama3.1",
+        context: Optional[list[int]] = None,
+        messages: Optional[list[tuple[Author, str]]] = None,
+        system: Optional[str] = None,
+        format: Literal["", "json"] = "",
+        parameters: Optional[Options] = None,
+        keep_alive: int = 5,
+    ) -> None:
+        if context is None:
+            context = []
+        if messages is None:
+            messages = []
+        if parameters is None:
+            parameters = {}
 
-@pytest.mark.asyncio
-async def test_generate():
-    llm = OllamaLLM()
-    res = await llm.completion("Please add 2 and 2")
-    assert "4" in res
+        self.ollama = OllamaLLM(
+            model=model,
+            context=context,
+            system=system,
+            format=format,
+            options=parameters,
+            keep_alive=keep_alive,
+        )
+        self.chat_name = chat_name
+        self.db_id = db_id
+        self.messages = messages
+        self.system = system
+        self.format = format
+        self.parameters = parameters
+        self.keep_alive = keep_alive
+        self.images = []
 
+    async def send_message(self, message: str) -> str:
+        self.messages.append((Author.USER, message))
+        response = ""
+        async for text in self.ollama.stream(message, [img for _, img in self.images]):
+            response = text
+        self.messages.append((Author.OLLAMA, response))
+        return response
 
-@pytest.mark.asyncio
-async def test_llm_context():
-    llm = OllamaLLM()
-    await llm.completion("I am testing oterm, a python client for Ollama.")
-    # There should now be a context saved for the conversation.
-    assert llm.context
-    res = await llm.completion("Do you remember what I am testing?")
-    assert "oterm" in res
+    async def process_input(self, input_text: str) -> None:
+        if input_text.strip() == 'exit':
+            return
+        response = await self.send_message(input_text)
+        print(f"Ollama: {response}")
 
+async def main():
+    # Initialize the ChatContainer
+    chat_container = ChatContainer(
+        db_id=1,
+        chat_name="Test Chat",
+        model="llama3.1",
+        context=[],
+        messages=[],
+        system=None,
+        format="",
+        parameters={},
+        keep_alive=5
+    )
+    
+    print("Welcome to the Chat CLI. Type 'exit' to quit.")
 
-@pytest.mark.asyncio
-async def test_multi_modal_llm(llama_image):
-    llm = OllamaLLM(model="llava")
-    res = await llm.completion("Describe this image", images=[llama_image])
-    assert "llama" in res or "animal" in res
+    while True:
+        user_input = input("You: ")
+        if user_input.strip() == 'exit':
+            break
+        await chat_container.process_input(user_input)
 
-
-@pytest.mark.asyncio
-async def test_errors():
-    llm = OllamaLLM(model="non-existent-model")
-    try:
-        await llm.completion("This should fail.")
-    except ResponseError as e:
-        assert "model 'non-existent-model' not found" in str(e)
-
-
-@pytest.mark.asyncio
-async def test_iterator():
-    llm = OllamaLLM()
-    response = ""
-    async for text in llm.stream("Please add 2 and 2"):
-        response = text
-    assert "4" in response
+# Run the CLI interface
+if __name__ == "__main__":
+    asyncio.run(main())

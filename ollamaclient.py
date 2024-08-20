@@ -1,46 +1,3 @@
-
----
-
-# Oterm - Text-Based Terminal Client for Ollama
-
-Oterm is a text-based terminal client designed for interacting with [Ollama](https://github.com/jmorganca/ollama) servers.
-
-## Features
-
-- Intuitive and simple terminal UI.
-- Optimized for use on a variety of devices.
-- Efficient data handling with SQLite for storing chat sessions.
-- Customizable model system prompts and parameters.
-- Supports any models available in Ollama or your own custom models.
-
-## Installation and Usage
-
-To simplify installation and configuration, use the provided `auto-start.sh` script:
-
-```bash
-./auto-start.sh
-```
-
-This script automatically:
-
-- Determines the Python version installed on your system.
-- Installs necessary dependencies using `pip`.
-- Copies the `oterm` executable to `/usr/local/bin/`.
-- Copies the `oterm` package to the appropriate Python site-packages directory.
-- Configures Oterm to work with your Ollama server.
-
-### Environment Variables
-
-Oterm requires the following environment variables for configuration:
-
-- **OLLAMA_URL**: URL of the Ollama API (e.g., `http://0.0.0.0:11434`).
-- **OTERM_VERIFY_SSL**: Set to `False` to disable SSL verification.
-
-### Code Reference
-
-The following Python code snippet demonstrates integration with Ollama using `OllamaLLM` class and `parse_ollama_parameters` function:
-
-```python
 from ast import literal_eval
 from typing import Any, AsyncGenerator, AsyncIterator, Literal, Mapping
 
@@ -164,20 +121,3 @@ def parse_ollama_parameters(parameter_text: str) -> Options:
             else:
                 params[key] = value
     return params
-```
-
-### Further Customization
-
-For advanced customization of Ollama parameters and integration, refer to the `OllamaLLM` class and `parse_ollama_parameters` function. These provide flexibility in setting up and interacting with different Ollama models directly from your terminal.
-
-### Screenshots
-
-![Chat](screenshots/chat.png)
-![Model Selection](screenshots/model_selection.png)
-![Image Selection](screenshots/image_selection.png)
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
