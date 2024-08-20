@@ -44,7 +44,7 @@ RUN cp .usr/local/bin/oterm /usr/local/bin/
 RUN chmod +x /usr/local/bin/oterm  # Uncomment if needed
 
 # Set the command to run when the container starts
-CMD ["python", "/usr/local/bin/oterm"]
+# CMD ["python", "/usr/local/bin/oterm"]
 
 # Optional: Specify environment variables or additional configuration
 # ENV KEY=VALUE
