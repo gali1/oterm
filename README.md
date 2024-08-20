@@ -1,7 +1,7 @@
 
 ---
 
-# Oterm - Text-Based Terminal Client for Ollama [FAST DEPLOYMENT!]
+# Oterm - Text-Based Terminal Client for Ollama [Optimized!]
 
 Oterm is a text-based terminal client designed for interacting with [Ollama](https://github.com/jmorganca/ollama) servers.
 
