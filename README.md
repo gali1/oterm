@@ -339,9 +339,9 @@ AMA_URL, verify=envConfig.OTERM_VERIFY_SSL
 
 **Future Improvements:**
 
-- **Error Handling:** While the current code is functional, adding more robust error handling, particularly around network failures and unexpected API responses, could make the library more resilient.
+- **Error Handling:** The current code is functional, adding more robust error handling, particularly around network failures and unexpected API responses, could make the library more resilient.
 - **Caching:** Implementing a caching mechanism for frequent requests could reduce latency and improve performance.
-- **Enhanced Testing:** While there are tests in place, expanding the test suite to cover more edge cases and integrating it with CI/CD pipelines would be beneficial.
+- **Enhanced Testing:** There are tests in place, expanding the test suite to cover more edge cases and integrating it with CI/CD pipelines would be beneficial.
 
 ## **Built With**
 
