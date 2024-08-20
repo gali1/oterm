@@ -18,7 +18,7 @@ before_script:
 - virtualenv venv
 - source venv/bin/activate
 - curl https://ollama.ai/install.sh | sh
-- ollama pull tinyllama:latest
+- ollama serve
 
 deploy:
   stage: deploy
