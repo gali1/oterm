@@ -1,0 +1,3 @@
+[console_scripts]
+oterm=oterm.cli.oterm:cli
+

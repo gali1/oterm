@@ -1,0 +1,134 @@
+Metadata-Version: 2.1
+Name: oterm
+Version: 0.4.0
+Summary: A text-based terminal client for Ollama.
+Home-page: https://github.com/ggozad/oterm
+License: MIT
+Author: Yiorgis Gozadinos
+Author-email: ggozadinos@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Classifier: Operating System :: Microsoft :: Windows :: Windows 11
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Typing :: Typed
+Requires-Dist: aiosql (>=10.4,<11.0)
+Requires-Dist: aiosqlite (>=0.20.0,<0.21.0)
+Requires-Dist: ollama (>=0.3.1,<0.4.0)
+Requires-Dist: packaging (>=24.0,<25.0)
+Requires-Dist: pillow (>=10.4.0,<11.0.0)
+Requires-Dist: pyperclip (>=1.9.0,<2.0.0)
+Requires-Dist: python-dotenv (>=1.0.1,<2.0.0)
+Requires-Dist: rich-pixels (>=3.0.1,<4.0.0)
+Requires-Dist: textual (>=0.76.0,<0.77.0)
+Requires-Dist: typer (>=0.12.3,<0.13.0)
+Project-URL: Bug Tracker, https://github.com/ggozad/oterm/issues
+Project-URL: Repository, https://github.com/ggozad/oterm
+Description-Content-Type: text/markdown
+
+# oterm
+
+the text-based terminal client for [Ollama](https://github.com/jmorganca/ollama).
+
+## Features
+
+* intuitive and simple terminal UI, no need to run servers, frontends, just type `oterm` in your terminal.
+* multiple persistent chat sessions, stored together with system prompt & parameter customizations in sqlite.
+* can use any of the models you have pulled in Ollama, or your own custom models.
+* allows for easy customization of the model's system prompt and parameters.
+
+## Installation
+
+Using `brew` for MacOS:
+
+```bash
+brew tap ggozad/formulas
+brew install ggozad/formulas/oterm
+```
+
+Using `yay` (or any AUR helper) for Arch Linux:
+
+```bash
+yay -S oterm
+```
+
+Using `pip`:
+
+```bash
+pip install oterm
+```
+
+## Using
+
+In order to use `oterm` you will need to have the Ollama server running. By default it expects to find the Ollama API running on `http://0.0.0.0:11434`. If you are running Ollama inside docker or on a different host/port, use the `OLLAMA_HOST` environment variable to customize the host/port. Alternatively you can use `OLLAMA_URL` to specify the full http(s) url. Setting `OTERM_VERIFY_SSL` to `False` will disable SSL verification.
+
+```bash
+OLLAMA_URL=http://host:port/api
+```
+
+The following keyboard shortcuts are supported:
+
+* <kbd>^ Ctrl</kbd>+<kbd>N</kbd> - create a new chat session
+* <kbd>^ Ctrl</kbd>+<kbd>E</kbd> - edit the chat session (change template, system prompt or format)
+* <kbd>^ Ctrl</kbd>+<kbd>R</kbd> - rename the current chat session
+* <kbd>^ Ctrl</kbd>+<kbd>S</kbd> - export the current chat session as markdown
+* <kbd>^ Ctrl</kbd>+<kbd>X</kbd> - delete the current chat session
+* <kbd>^ Ctrl</kbd>+<kbd>T</kbd> - toggle between dark/light theme
+* <kbd>^ Ctrl</kbd>+<kbd>Q</kbd> - quit
+
+* <kbd>^ Ctrl</kbd>+<kbd>L</kbd> - switch to multiline input mode
+* <kbd>^ Ctrl</kbd>+<kbd>P</kbd> - select an image to include with the next message
+* <kbd>↑</kbd>     - navigate through history of previous prompts
+
+* <kbd>^ Ctrl</kbd>+<kbd>Tab</kbd> - open the next chat
+* <kbd>^ Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Tab</kbd> - open the previous chat
+
+In multiline mode, you can press <kbd>Enter</kbd> to send the message, or <kbd>Shift</kbd>+<kbd>Enter</kbd> to add a new line at the cursor.
+
+While Ollama is inferring the next message, you can press <kbd>Esc</kbd> to cancel the inference.
+
+Note that some of the shortcuts may not work in a certain context, for example pressing <kbd>↑</kbd> while the prompt is in multi-line mode.
+
+### Copy / Paste
+
+It is difficult to properly support copy/paste in terminal applications. You can copy blocks to your clipboard as such:
+
+* clicking a message will copy it to the clipboard.
+* clicking a code block will only copy the code block to the clipboard.
+
+For most terminals there exists a key modifier you can use to click and drag to manually select text. For example:
+* `iTerm`  <kbd>Option</kbd> key.
+* `Gnome Terminal` <kbd>Shift</kbd> key.
+* `Windows Terminal` <kbd>Shift</kbd> key.
+
+
+### Customizing models
+
+When creating a new chat, you may not only select the model, but also customize the the `system` instruction as well as the `parameters` (such as context length, seed, temperature etc) passed to the model. For a list of all supported parameters refer to the [Ollama documentation](https://github.com/ollama/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values). Checking the `JSON output` checkbox will force the model to reply in JSON format. Please note that `oterm` will not (yet) pull models for you, use `ollama` to do that. All the models you have pulled or created will be available to `oterm`.
+
+You can also "edit" the chat to change the system prompt, parameters or format. Note, that the model cannot be changed once the chat has started.
+
+### Chat session storage
+
+All your chat sessions are stored locally in a sqlite database. You can customize the directory where the database is stored by setting the `OTERM_DATA_DIR` environment variable.
+
+You can find the location of the database by running `oterm --db`.
+
+### Screenshots
+
+![Chat](screenshots/chat.png)
+![Model selection](./screenshots/model_selection.png)
+![Image selection](./screenshots/image_selection.png)
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
