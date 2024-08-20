@@ -13,6 +13,7 @@ The oterm-quick client is a Python-based interface designed to interact with lan
   - [Quick Start [LIKE REAL QUICK!]](#quick-start-like-real-quick)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
+  - [Docker Installation](#docker-installation)
 - [Running the Tests](#running-the-tests)
   - [Breakdown of End-to-End Tests](#breakdown-of-end-to-end-tests)
   - [Coding Style Tests](#coding-style-tests)
@@ -102,6 +103,33 @@ Follow these steps to set up your development environment:
    ```
 
    This command should list available models if everything is set up correctly.
+
+### **Docker Installation**
+
+For a quick and isolated environment setup, you can use Docker. Follow these steps to build and run the Docker image:
+
+1. **Build the Docker Image**: Navigate to the directory containing your Dockerfile and build the image.
+
+   ```bash
+   docker build -t oterm-quick .
+   ```
+
+2. **Run the Docker Container**: Start the container from the built image.
+
+   ```bash
+   docker run -it --rm oterm-quick
+   ```
+
+   This will execute the `oterm` command as defined in the Dockerfile.
+
+Here’s a brief explanation of the Dockerfile used:
+
+- **Base Image**: Uses `python:3.10-slim` as the base image with Python pre-installed.
+- **Environment Setup**: Sets up the environment for non-interactive package installation.
+- **Dependencies**: Installs required packages and copies project files into the image.
+- **Package Installation**: Installs the `uv` package and other dependencies from `requirements.txt`.
+- **Executable Setup**: Copies the executable file to the appropriate directory and sets the necessary permissions.
+- **Entrypoint**: Specifies the default command to run when the container starts.
 
 ## **Running the Tests**
 
@@ -236,7 +264,9 @@ class OllamaLLM:
         model="tinyllama:latest",
         system: str | None = None,
         history: list[Message] = [],
-        format: Literal["", "json"] = "",
+        format:
+
+ Literal["", "json"] = "",
         options: Options = Options(
             top_k=20,
             top_p=0.9,
@@ -271,9 +301,7 @@ class OllamaLLM:
         self.keep_alive = keep_alive
         self.options = options
         self.client = AsyncClient(
-            host=envConfig.OLL
-
-AMA_URL, verify=envConfig.OTERM_VERIFY_SSL
+            host=envConfig.OLLAMA_URL, verify=envConfig.OTERM_VERIFY_SSL
         )
 
         if system:
