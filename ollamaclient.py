@@ -6,7 +6,6 @@ from ollama import AsyncClient, Client, Message, Options
 
 from oterm.config import envConfig
 
-
 class OllamaLLM:
     def __init__(
         self,
@@ -26,7 +25,7 @@ class OllamaLLM:
             frequency_penalty=1.0,  # Balanced frequency penalty
             num_thread=4,          # Adjust based on system capabilities
             use_mmap=True,         # Efficient memory usage
-            num_ctx=128,            # Reduce context size for performance
+            num_ctx=128,           # Reduce context size for performance
             num_batch=2,           # Increase batch size for throughput
             mirostat=1,            # Default dynamic sampling
             mirostat_tau=0.7,      # Balanced parameter for mirostat
@@ -60,6 +59,7 @@ class OllamaLLM:
         if images:
             user_prompt["images"] = images
         self.history.append(user_prompt)
+        
         try:
             response = await self.client.chat(
                 model=self.model,
@@ -115,7 +115,6 @@ class OllamaLLM:
         client = Client(host=envConfig.OLLAMA_URL, verify=envConfig.OTERM_VERIFY_SSL)
         return client.show(model)
 
-
 def parse_ollama_parameters(parameter_text: str) -> Options:
     lines = parameter_text.split("\n")
     params = Options()
@@ -126,11 +125,12 @@ def parse_ollama_parameters(parameter_text: str) -> Options:
                 value = literal_eval(value)
             except (SyntaxError, ValueError):
                 pass
-            if params.get(key):
-                if not isinstance(params[key], list):
-                    params[key] = [params[key], value]
+            if hasattr(params, key):
+                current_value = getattr(params, key)
+                if not isinstance(current_value, list):
+                    setattr(params, key, [current_value, value])
                 else:
-                    params[key].append(value)
+                    current_value.append(value)
             else:
-                params[key] = value
+                setattr(params, key, value)
     return params
