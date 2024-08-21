@@ -30,6 +30,7 @@ The oterm-quick client is a Python-based interface designed to interact with lan
   - [Optimizations](#optimizations)
 - [Built With](#built-with)
 - [Versioning](#versioning)
+- [Screenshots](#screenshots)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 
@@ -380,6 +381,12 @@ class OllamaLLM:
 ## **Versioning**
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/keli2/ollama-llm-client/tags).
+
+### Screenshots
+
+![Chat](screenshots/chat.png)
+![Model Selection](screenshots/model_selection.png)
+![Image Selection](screenshots/image_selection.png)
 
 ## **License**
 
