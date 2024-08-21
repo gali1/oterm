@@ -48,3 +48,4 @@ typing-extensions==4.12.2
 uc-micro-py==1.0.3
 wmctrl==0.5
 yarl==1.9.4
+psutil==6.0.0
