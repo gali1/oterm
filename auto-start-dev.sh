@@ -26,6 +26,9 @@ fi
 
 echo "Detected Python version: $python_version"
 
+# Reset Database
+rm /root/.local/share/oterm/store.db
+
 # Install 'uv' package globally
 pip install uv
 
